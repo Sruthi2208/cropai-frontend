@@ -32,7 +32,7 @@ function CropForm() {
       rainfall: parseFloat(formData.rainfall),
     };
     try {
-      const res = await axios.post("https://cropai-backend-6.onrender.com/predict", payload);
+      const res = await axios.post("https://cropai-backend-7.onrender.com/predict", payload);
       setResult(res.data);
       // Play audio output
       if (res.data.output_text) {
