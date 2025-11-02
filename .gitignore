@@ -1,23 +1,59 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# ==========================================
+# Node & React (frontend/backend)
+# ==========================================
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+.pnp/
+.pnp.js
+coverage/
+build/
+dist/
+
+# ==========================================
+# Python (for backend ML models)
+# ==========================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# ==========================================
+# Environment files & secrets
+# ==========================================
+.env
+.env.*
+*.env
+config.json
+
+# ==========================================
+# IDE & OS generated files
+# ==========================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==========================================
+# Dataset or model files (optional)
+# Uncomment if large models or datasets shouldn’t go to GitHub
+# dataset/
+# *.h5
+# *.pkl
+# *.csv
+# ==========================================
