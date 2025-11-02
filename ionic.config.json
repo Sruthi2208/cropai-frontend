@@ -1,6 +1,8 @@
 {
   "name": "ai-crop-recommender",
-  "integrations": {},
-  "type": "custom",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
   "id": "860800f1"
 }
