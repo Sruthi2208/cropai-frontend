@@ -13,8 +13,9 @@ function CropForm() {
     rainfall: "",
     language: "en",
   });
+
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null); // optional — for clean handling
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +36,7 @@ function CropForm() {
     };
 
     try {
-      setError(null); // clear previous errors
+      setError(null);
 
       const res = await axios.post(
         "https://cropai-backend-7.onrender.com/predict",
@@ -44,7 +45,7 @@ function CropForm() {
 
       setResult(res.data);
 
-      // ✅ Voice output (only if supported)
+      // ✅ Voice output
       if (res.data.output_text && "speechSynthesis" in window) {
         const msg = new SpeechSynthesisUtterance(res.data.output_text);
         msg.lang = formData.language;
@@ -54,31 +55,59 @@ function CropForm() {
       }
     } catch (err) {
       console.error("Backend connection failed:", err);
-      // Removed alert, just store error if needed
       setError("⚠️ Unable to connect to backend at the moment.");
     }
   };
 
+  // ✅ Fields with correct dataset-based units
+  const fields = [
+    { name: "N", label: "Nitrogen (N)", unit: "kg/ha" },
+    { name: "P", label: "Phosphorus (P)", unit: "kg/ha" },
+    { name: "K", label: "Potassium (K)", unit: "kg/ha" },
+    { name: "temperature", label: "Temperature", unit: "°C" },
+    { name: "humidity", label: "Humidity", unit: "%" },
+    { name: "ph", label: "pH Level", unit: "pH" },
+    { name: "rainfall", label: "Rainfall", unit: "mm" },
+  ];
+
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ display: "grid", gap: "15px" }}>
-        {["N", "P", "K", "temperature", "humidity", "ph", "rainfall"].map((key) => (
-          <div key={key}>
+        {fields.map((field) => (
+          <div
+            key={field.name}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "10px",
+            }}
+          >
             <input
               type="number"
-              name={key}
-              placeholder={key.toUpperCase()}
-              value={formData[key]}
+              name={field.name}
+              placeholder={field.label}
+              value={formData[field.name]}
               onChange={handleChange}
               required
               style={{
-                width: "100%",
+                flex: 1,
                 padding: "10px",
                 borderRadius: "8px",
                 border: "1px solid #ccc",
                 fontSize: "16px",
               }}
             />
+            <span
+              style={{
+                fontSize: "16px",
+                color: "#555",
+                minWidth: "70px",
+                textAlign: "left",
+              }}
+            >
+              {field.unit}
+            </span>
           </div>
         ))}
 
@@ -86,7 +115,11 @@ function CropForm() {
           name="language"
           value={formData.language}
           onChange={handleChange}
-          style={{ padding: "10px", borderRadius: "8px", fontSize: "16px" }}
+          style={{
+            padding: "10px",
+            borderRadius: "8px",
+            fontSize: "16px",
+          }}
         >
           <option value="en">English</option>
           <option value="hi">Hindi</option>
@@ -115,7 +148,6 @@ function CropForm() {
         </button>
       </form>
 
-      {/* ✅ Optional: Only show error if truly failed */}
       {error && !result && (
         <p style={{ color: "red", textAlign: "center", marginTop: "10px" }}>
           {error}
@@ -124,7 +156,6 @@ function CropForm() {
 
       {result && <Result result={result} />}
 
-      {/* Contact Information Section */}
       <div
         style={{
           marginTop: "25px",
